@@ -26,13 +26,16 @@ def main():
    if data:
     if key.data=="out":out.extend(data)
     else:err.extend(data)
-  if len(out)>MAX or len(err)>MAX:stop(p);sys.stderr.write("Process output exceeded limit\n");raise SystemExit(125)
+  if timeout:
+   if len(out)>MAX or len(err)>MAX:stop(p);sys.stderr.write("Process output exceeded limit\n");raise SystemExit(125)
+  else:
+   del out[:-MAX];del err[:-MAX]
  while sel.get_map():
   for key,_ in sel.select(0):
    data=os.read(key.fileobj.fileno(),4096)
    if not data:sel.unregister(key.fileobj);continue
    if key.data=="out":out.extend(data)
    else:err.extend(data)
- if len(out)>MAX or len(err)>MAX:raise SystemExit(125)
+ if timeout and (len(out)>MAX or len(err)>MAX):raise SystemExit(125)
  sys.stdout.buffer.write(out);sys.stderr.buffer.write(err);raise SystemExit(p.returncode)
 if __name__=="__main__":main()

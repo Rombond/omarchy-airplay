@@ -215,8 +215,8 @@ BarWidget {
     command.push("-target", root.selectedAddress)
     command.push("-port-range", portRange, "-video-codec", codec, "-hwaccel", encoder, "-fps", String(fps), "-target-latency-ms", String(latency))
     if (!root.boolSetting("audio", false)) command.push("-no-audio")
-    if (pairCode !== "") command.push("-pair", "-code", pairCode)
-    return [root.runnerPath, "--timeout", "120", "--"].concat(command)
+    if (pairCode !== "") command.push("-pair", "-pin", pairCode)
+    return [root.runnerPath, "--timeout", "0", "--"].concat(command)
   }
 
   function launchStream(pairCode) {
